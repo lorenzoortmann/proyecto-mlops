@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  data_prep:
+    cmd: python src/data_prep.py --out data/processed/clean_telco.csv
+    deps:
+    - path: data/raw/telco_churn.csv
+      hash: md5
+      md5: 006527876bfe18c977d74eb4bc59443f
+      size: 873370
+    - path: src/data_prep.py
+      hash: md5
+      md5: 3c6a1f95b04f49bb361f3be2bd4eaf99
+      size: 1517
+    outs:
+    - path: data/processed/clean_telco.csv
+      hash: md5
+      md5: ea414c80f0cff08fa50d14694953949e
+      size: 783359

@@ -1,0 +1,6 @@
+data/
+models/
+.env
+*.log
+__pycache__/
+.dvc/cache
