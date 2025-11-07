@@ -1,8 +1,20 @@
 stages:
   data_prep:
-    cmd: python src/data_prep.py --out data/processed/clean_telco.csv
+    cmd: python src/data_prep.py 
     deps:
       - src/data_prep.py
       - data/raw/telco_churn.csv
     outs:
-      - data/processed/clean_telco.csv
+      - data/processed/telco_clean.csv
+  
+  train:
+    cmd: python src/train.py --data data/processed/telco_clean.csv --model 
+      models/churn_model.pkl --params params/params.yaml --metrics metrics.json
+    deps:
+    - data/processed/telco_clean.csv
+    - params/params.yaml
+    - src/train.py
+    outs:
+    - models/logistic_regression.pkl
+    metrics:
+    - reports/metrics.json

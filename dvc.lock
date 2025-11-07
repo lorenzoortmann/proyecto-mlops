@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   data_prep:
-    cmd: python src/data_prep.py --out data/processed/clean_telco.csv
+    cmd: python src/data_prep.py
     deps:
     - path: data/raw/telco_churn.csv
       hash: md5
@@ -9,10 +9,35 @@ stages:
       size: 873370
     - path: src/data_prep.py
       hash: md5
-      md5: 3c6a1f95b04f49bb361f3be2bd4eaf99
-      size: 1517
+      md5: 055d2f67a1389280419e85417de04120
+      size: 1652
     outs:
-    - path: data/processed/clean_telco.csv
+    - path: data/processed/telco_clean.csv
       hash: md5
-      md5: ea414c80f0cff08fa50d14694953949e
-      size: 783359
+      md5: 004465a82c600845f99d035943fe597f
+      size: 1022255
+  train:
+    cmd: python src/train.py --data data/processed/telco_clean.csv --model 
+      models/churn_model.pkl --params params/params.yaml --metrics metrics.json
+    deps:
+    - path: data/processed/telco_clean.csv
+      hash: md5
+      md5: 004465a82c600845f99d035943fe597f
+      size: 1022255
+    - path: params/params.yaml
+      hash: md5
+      md5: 411df1d9cf39f8440fe593a8fae6baf2
+      size: 275
+    - path: src/train.py
+      hash: md5
+      md5: 941f72cce1eff661c271333408413aa6
+      size: 2358
+    outs:
+    - path: models/logistic_regression.pkl
+      hash: md5
+      md5: cb09e42a557a38f103f1dd589ecf2e53
+      size: 1007
+    - path: reports/metrics.json
+      hash: md5
+      md5: 116b79a4a043541ab70d13071148723b
+      size: 132
