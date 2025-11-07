@@ -16,5 +16,6 @@ stages:
     - src/train.py
     outs:
     - models/logistic_regression.pkl
+    - models/scaler.pkl
     metrics:
     - reports/metrics.json

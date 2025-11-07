@@ -16,6 +16,7 @@ def main():
     data_path = params["paths"]["processed_data"]
     model_output_path = params["paths"]["model_path"]
     metrics_output_path = params["paths"]["metrics"]
+    scaler_path = params["paths"]["scaler"]
 
     test_size = params["split"]["test_size"]
     random_state = params["split"]["random_state"]
@@ -39,7 +40,7 @@ def main():
     X_test_scaled = scaler.transform(X_test)
 
     # === Entrenamiento del modelo ===
-    if params["model"]["type"] == "LoggisticRegression":
+    if params["model"]["type"] == "LogisticRegression":
         model = LogisticRegression(max_iter=params["model"]["max_iter"])
     else:
         raise ValueError("model.type no soportado")
@@ -63,6 +64,8 @@ def main():
     os.makedirs(os.path.dirname(metrics_output_path), exist_ok=True)
 
     joblib.dump(model, model_output_path)
+    joblib.dump(scaler, scaler_path)
+
 
     with open(metrics_output_path, "w") as f:
         json.dump(metrics, f, indent=4)
