@@ -66,7 +66,12 @@ def main():
 
         # === Entrenamiento del modelo ===
         if params["model"]["type"] == "LogisticRegression":
-            model = LogisticRegression(max_iter=params["model"]["max_iter"])
+            model = LogisticRegression(
+                max_iter=params["model"]["max_iter"],
+                penalty=params["model"]["penalty"],
+                solver=params["model"]["solver"],
+                C=params["model"]["C"],
+            )
         else:
             raise ValueError("model.type no soportado")
         model.fit(X_train_scaled, y_train)
@@ -96,7 +101,7 @@ def main():
         # Modelo en formato MLflow
         model_info=mlflow.sklearn.log_model(model, "modelo_regresion_logistica")
         model_uri=model_info.model_uri
-        model_name="Logistic_Regression_Model"
+        model_name="Model_Logistic_Regression"
         mlflow.register_model(model_uri, model_name)
         
         # Guardar métricas en archivo

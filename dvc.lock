@@ -27,16 +27,16 @@ stages:
       size: 1022255
     - path: params/params.yaml
       hash: md5
-      md5: 1fba4bd11bd1c1858efbcf79939f5f5d
-      size: 303
+      md5: 07623a648946e20b6f482cd600aec045
+      size: 349
     - path: src/train.py
       hash: md5
-      md5: 3bb22eee10f21a9df593090391c972ee
-      size: 4140
+      md5: b17a2089e9b4cb4e2a668ed305e68cc6
+      size: 4318
     outs:
     - path: models/logistic_regression.pkl
       hash: md5
-      md5: cb09e42a557a38f103f1dd589ecf2e53
+      md5: b3a225e07d29496074c49759bb8cb661
       size: 1007
     - path: models/scaler.pkl
       hash: md5
