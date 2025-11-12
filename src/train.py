@@ -5,10 +5,18 @@ import json
 import os
 import mlflow
 import mlflow.sklearn
+from dotenv import load_dotenv
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# ===  Cargar variables del archivo .env ===
+load_dotenv()
+
+# ===  Configurar MLflow con las variables ===
+MLFLOW_TRACKING_USERNAME = os.getenv("MLFLOW_TRACKING_USERNAME")
+MLFLOW_TRACKING_PASSWORD = os.getenv("MLFLOW_TRACKING_PASSWORD")
 
 def main():
     # === Cargar parámetros ===
