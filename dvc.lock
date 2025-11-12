@@ -18,7 +18,8 @@ stages:
       size: 1022255
   train:
     cmd: python src/train.py --data data/processed/telco_clean.csv --model 
-      models/churn_model.pkl --params params/params.yaml --metrics metrics.json
+      models/churn_model.pkl --params params/params.yaml --metrics 
+      reports/metrics.json
     deps:
     - path: data/processed/telco_clean.csv
       hash: md5
@@ -30,8 +31,8 @@ stages:
       size: 303
     - path: src/train.py
       hash: md5
-      md5: 2bb8949cd74d1a1919f83d3b5c4d3af3
-      size: 2442
+      md5: 3bb22eee10f21a9df593090391c972ee
+      size: 4140
     outs:
     - path: models/logistic_regression.pkl
       hash: md5

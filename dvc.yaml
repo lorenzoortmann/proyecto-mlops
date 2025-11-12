@@ -9,7 +9,7 @@ stages:
   
   train:
     cmd: python src/train.py --data data/processed/telco_clean.csv --model 
-      models/churn_model.pkl --params params/params.yaml --metrics metrics.json
+      models/churn_model.pkl --params params/params.yaml --metrics reports/metrics.json
     deps:
     - data/processed/telco_clean.csv
     - params/params.yaml

@@ -99,13 +99,14 @@ def main():
         model_name="Logistic_Regression_Model"
         mlflow.register_model(model_uri, model_name)
         
-        # Scaler y params como artefactos
+        # Guardar métricas en archivo
+        with open(metrics_output_path, "w") as f:
+            json.dump(metrics, f, indent=4)
+
+        # Loguear artefactos
         mlflow.log_artifact(scaler_path, artifact_path="artifacts")
         mlflow.log_artifact("params/params.yaml", artifact_path="artifacts")
         mlflow.log_artifact(metrics_output_path, artifact_path="artifacts")
-
-        with open(metrics_output_path, "w") as f:
-            json.dump(metrics, f, indent=4)
 
         print(f"\nModelo guardado en: {model_output_path}")
         print(f"Métricas guardadas en: {metrics_output_path}")
