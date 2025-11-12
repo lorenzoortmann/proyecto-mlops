@@ -19,5 +19,4 @@ stages:
     - models/scaler.pkl
     metrics:
     - reports/metrics.json
-    env:
-    - .env
+
