@@ -1,9 +1,9 @@
 model:
   type: LogisticRegression
-  max_iter: 200
-  penalty: "l2"
-  solver: "saga"
-  C: 0.5
+  max_iter: 300
+  penalty: "l1"
+  solver: "liblinear"
+  C: 0.1
 split:  
   test_size: 0.2
   random_state: 42
