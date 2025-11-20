@@ -43,6 +43,14 @@ jobs:
           else
             echo "No hay carpeta tests/, se salta esta etapa."
           fi
+      
+      - name: DVC pull raw data
+        env:
+          DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          dvc pull data/raw/telco_churn.csv -v
+
 
       - name: Run pipeline with DVC (data_prep + train)
         env:
