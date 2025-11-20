@@ -12,17 +12,33 @@ on:
 
 jobs:
   ent_trackeo:
-    - name: Run pipeline with DVC (official training)
-      env:
-        LOG_MLFLOW: "1"   # acá sí se loguea
-        MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
-      run: |
-        dvc repro -v
+    runs-on: ubuntu-latest
 
-    - name: DVC push artifacts
-      env:
-        DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
-        DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-      run: |
-        dvc push -v
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install dvc[dags] mlflow
+
+      - name: Run pipeline with DVC (official training)
+        env:
+          LOG_MLFLOW: "1"
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        run: |
+          dvc repro -v
+
+      - name: DVC push artifacts
+        env:
+          DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          dvc push -v
 
