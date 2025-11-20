@@ -1,0 +1,28 @@
+name: Entrenamiento y trackeo en MLflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'params/**'
+      - 'dvc.yaml'
+      - 'dvc.lock'
+
+jobs:
+  ent_trackeo:
+    - name: Run pipeline with DVC (official training)
+      env:
+        LOG_MLFLOW: "1"   # acá sí se loguea
+        MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+      run: |
+        dvc repro -v
+
+    - name: DVC push artifacts
+      env:
+        DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+        DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+      run: |
+        dvc push -v
+
