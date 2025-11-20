@@ -1,0 +1,73 @@
+name: CI-CD MLOps
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/*'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  ci-cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          lfs: true  # Si usás Git LFS para archivos grandes
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      #  ver remotos DVC para debug
+      - name: Show DVC remotes
+        run: |
+          dvc remote list || echo "No hay remotos configurados"
+
+      - name: DVC pull (datos y artefactos)
+        env:
+          DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          dvc pull -v
+
+      - name: Run tests 
+        run: |
+          if [ -d "tests" ]; then
+            pytest -q
+          else
+            echo "No hay carpeta tests/, se salta esta etapa."
+          fi
+
+      - name: Run pipeline with DVC (data_prep + train)
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+          MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+        run: |
+          dvc repro -v
+
+      - name: Show metrics
+        run: |
+          dvc metrics show || echo "No se encontraron métricas en DVC, revisar dvc.yaml"
+
+      # Sólo en pushes a main: subir artefactos al remoto (modelos, métricas, etc.)
+      - name: DVC push (solo en main)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          dvc push -v
