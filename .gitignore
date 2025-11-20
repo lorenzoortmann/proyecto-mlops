@@ -1,5 +1,8 @@
-data/
-models/
+data/*
+!data/*.dvc
+!data/*/*.dvc
+models/*
+!models/*.dvc
 .env
 *.log
 __pycache__/
