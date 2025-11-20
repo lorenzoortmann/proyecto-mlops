@@ -36,13 +36,6 @@ jobs:
         run: |
           dvc remote list || echo "No hay remotos configurados"
 
-      - name: DVC pull (datos y artefactos)
-        env:
-          DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
-          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-        run: |
-          dvc pull -v
-
       - name: Run tests 
         run: |
           if [ -d "tests" ]; then
