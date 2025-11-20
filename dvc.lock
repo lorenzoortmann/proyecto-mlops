@@ -36,7 +36,7 @@ stages:
     outs:
     - path: models/logistic_regression.pkl
       hash: md5
-      md5: a1e3ac870d9e695951ea98bbad6706f5
+      md5: 243d70ae5609c979a597ef6b0b249fea
       size: 1019
     - path: models/scaler.pkl
       hash: md5
